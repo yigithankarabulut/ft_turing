@@ -1,0 +1,66 @@
+{
+    "name" : "palindrome",
+    "alphabet": [ "1", "0", ".", "=", "y", "n"],
+    "blank" : ".",
+    "states" : [ "init", "swipe_right_1", "swipe_left_1", "swipe_left_0", "swipe_right_0", "run_left", "run_left_fail", "fail", "run_right", "HALT"],
+    "initial" : "init",
+    "finals" : [ "HALT"],
+    "transitions": {
+        "init":
+        [
+            { "read" : "1", "to_state": "swipe_right_1", "write": ".", "action": "RIGHT"},
+            { "read" : "0", "to_state": "swipe_right_0", "write": ".", "action": "RIGHT"},
+            { "read" : ".", "to_state": "run_right", "write": ".", "action": "RIGHT"}
+        ],
+        "swipe_right_1":
+        [
+            { "read" : "1", "to_state": "swipe_right_1", "write": "1", "action": "RIGHT"},
+            { "read" : "0", "to_state": "swipe_right_1", "write": "0", "action": "RIGHT"},
+            { "read" : ".", "to_state": "swipe_left_1", "write": ".", "action": "LEFT"},
+            { "read" : "=", "to_state": "swipe_left_1", "write": "=", "action": "LEFT"}
+        ],
+        "swipe_left_1":
+        [
+            { "read" : "1", "to_state": "run_left", "write": ".", "action": "LEFT"},
+            { "read" : "0", "to_state": "run_left_fail", "write": "0", "action": "LEFT"},
+            { "read" : ".", "to_state": "run_right", "write": ".", "action": "RIGHT"}
+        ],
+        "swipe_left_0":
+        [
+            { "read" : "1", "to_state": "run_left_fail", "write": "1", "action": "LEFT"},
+            { "read" : "0", "to_state": "run_left", "write": ".", "action": "LEFT"},
+            { "read" : ".", "to_state": "run_right", "write": ".", "action": "RIGHT"}
+        ],
+        "swipe_right_0":
+        [
+            { "read" : "1", "to_state": "swipe_right_0", "write": "1", "action": "RIGHT"},
+            { "read" : "0", "to_state": "swipe_right_0", "write": "0", "action": "RIGHT"},
+            { "read" : ".", "to_state": "swipe_left_0", "write": ".", "action": "LEFT"},
+            { "read" : "=", "to_state": "swipe_left_0", "write": "=", "action": "LEFT"}
+        ],
+        "run_left":
+        [
+            { "read" : "1", "to_state": "run_left", "write": "1", "action": "LEFT"},
+            { "read" : "0", "to_state": "run_left", "write": "0", "action": "LEFT"},
+            { "read" : ".", "to_state": "init", "write": ".", "action": "RIGHT"}
+        ],
+        "run_left_fail":
+        [
+            { "read" : "1", "to_state": "run_left_fail", "write": "1", "action": "LEFT"},
+            { "read" : "0", "to_state": "run_left_fail", "write": "0", "action": "LEFT"},
+            { "read" : ".", "to_state": "fail", "write": ".", "action": "RIGHT"}
+        ],
+        "fail":
+        [
+            { "read" : "1", "to_state": "fail", "write": ".", "action": "RIGHT"},
+            { "read" : "0", "to_state": "fail", "write": ".", "action": "RIGHT"},
+            { "read" : ".", "to_state": "fail", "write": ".", "action": "RIGHT"},
+            { "read" : "=", "to_state": "HALT", "write": "n", "action": "LEFT"}
+        ],
+        "run_right":
+        [
+            { "read" : ".", "to_state": "run_right", "write": ".", "action": "RIGHT"},
+            { "read" : "=", "to_state": "HALT", "write": "y", "action": "LEFT"}
+        ]
+    }
+}
